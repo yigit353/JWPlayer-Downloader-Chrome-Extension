@@ -1,0 +1,29 @@
+# Build output
+dist/
+
+# Dependencies
+node_modules/
+
+# Context/notes
+context/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor directories and files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+npm-debug.log*
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Coverage
+coverage/

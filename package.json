@@ -1,0 +1,19 @@
+{
+  "name": "jwplayer-downloader",
+  "version": "1.0.0",
+  "description": "Chrome extension to download JWPlayer m3u8 streams",
+  "type": "module",
+  "scripts": {
+    "build": "esbuild src/background/service-worker.ts src/popup/popup.ts --bundle --outdir=dist --format=esm",
+    "lint": "tsc --noEmit",
+    "test": "vitest run",
+    "test:native": "cd native-host && npm test",
+    "test:all": "npm run test && npm run test:native"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.268",
+    "esbuild": "^0.20.0",
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.0"
+  }
+}

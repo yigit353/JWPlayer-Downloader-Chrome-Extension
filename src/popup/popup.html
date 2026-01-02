@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JWPlayer Downloader</title>
+  <style>
+    body {
+      width: 350px;
+      padding: 16px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 14px;
+    }
+    h1 {
+      font-size: 18px;
+      margin: 0 0 16px 0;
+    }
+    .stream-list {
+      max-height: 200px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin-bottom: 16px;
+    }
+    .stream-item {
+      padding: 8px 12px;
+      border-bottom: 1px solid #eee;
+      cursor: pointer;
+    }
+    .stream-item:last-child {
+      border-bottom: none;
+    }
+    .stream-item:hover {
+      background: #f5f5f5;
+    }
+    .stream-item.selected {
+      background: #e3f2fd;
+    }
+    .stream-url {
+      font-size: 12px;
+      color: #666;
+      word-break: break-all;
+    }
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    label {
+      font-weight: 500;
+      font-size: 12px;
+      color: #555;
+    }
+    select {
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    button {
+      padding: 10px 16px;
+      background: #1976d2;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #1565c0;
+    }
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    .empty-state {
+      text-align: center;
+      color: #888;
+      padding: 24px;
+    }
+    .progress-section {
+      margin-top: 16px;
+      padding: 12px;
+      background: #f5f5f5;
+      border-radius: 4px;
+    }
+    .progress-section.hidden {
+      display: none;
+    }
+    .progress-bar-container {
+      width: 100%;
+      height: 8px;
+      background: #ddd;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+    .progress-bar {
+      height: 100%;
+      background: #1976d2;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    .status-text {
+      font-size: 12px;
+      color: #555;
+      margin-bottom: 8px;
+    }
+    .status-text.error {
+      color: #d32f2f;
+    }
+    .cancel-btn {
+      background: #757575;
+      width: 100%;
+    }
+    .cancel-btn:hover {
+      background: #616161;
+    }
+  </style>
+</head>
+<body>
+  <h1>JWPlayer Downloader</h1>
+  
+  <div id="streamList" class="stream-list">
+    <div class="empty-state">No streams detected</div>
+  </div>
+  
+  <div class="controls">
+    <div class="control-group">
+      <label for="qualitySelect">Video Quality</label>
+      <select id="qualitySelect" disabled>
+        <option value="">Select a stream first</option>
+      </select>
+    </div>
+    
+    <div class="control-group">
+      <label for="audioSelect">Audio Track</label>
+      <select id="audioSelect" disabled>
+        <option value="">Select a stream first</option>
+      </select>
+    </div>
+    
+    <button id="downloadBtn" disabled>Download</button>
+  </div>
+  
+  <div id="progressSection" class="progress-section hidden">
+    <div class="progress-bar-container">
+      <div id="progressBar" class="progress-bar"></div>
+    </div>
+    <div id="statusText" class="status-text">Preparing download...</div>
+    <button id="cancelBtn" class="cancel-btn" disabled>Cancel</button>
+  </div>
+  
+  <script src="popup.js" type="module"></script>
+</body>
+</html>

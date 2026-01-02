@@ -1,0 +1,9 @@
+{
+  "name": "jwplayer-downloader-host",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "host.js",
+  "scripts": {
+    "test": "node --test __tests__/*.test.js"
+  }
+}
