@@ -4,7 +4,7 @@
   "description": "Chrome extension to download JWPlayer m3u8 streams",
   "type": "module",
   "scripts": {
-    "build": "esbuild src/background/service-worker.ts src/popup/popup.ts --bundle --outdir=dist --format=esm",
+    "build": "esbuild src/background/service-worker.ts src/popup/popup.ts --bundle --outdir=dist --format=esm && cp src/manifest.json dist/ && cp src/popup/popup.html dist/popup/ && cp -r src/icons dist/",
     "lint": "tsc --noEmit",
     "test": "vitest run",
     "test:native": "cd native-host && npm test",
