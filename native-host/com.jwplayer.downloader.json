@@ -1,9 +1,9 @@
 {
   "name": "com.jwplayer.downloader",
   "description": "JWPlayer Downloader Native Host",
-  "path": "/Users/yigit/Documents/GitHub/JWPlayer-Downloader-Chrome-Extension/native-host/host.js",
+  "path": "/Users/yigit/Documents/GitHub/JWPlayer-Downloader-Chrome-Extension/native-host/host-wrapper.sh",
   "type": "stdio",
   "allowed_origins": [
-    "chrome-extension://YOUR_EXTENSION_ID/"
+    "chrome-extension://ejaepoimhkfandbdlcangbedefpbeokj/"
   ]
 }

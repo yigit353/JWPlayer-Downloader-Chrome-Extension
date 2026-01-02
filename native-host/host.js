@@ -2,6 +2,12 @@
 
 import { generateSegmentsTxt, runAria2c, mergeSegments } from './downloader.js';
 import { join } from 'node:path';
+import { appendFileSync } from 'node:fs';
+
+const logFile = '/tmp/jwplayer-native-host.log';
+const log = (msg) => appendFileSync(logFile, `[host] ${msg}\n`);
+
+log('host.js starting...');
 
 function readMessage() {
   return new Promise((resolve, reject) => {
@@ -69,14 +75,24 @@ function sendMessage(message) {
 }
 
 async function handleDownloadSegments(data) {
-  const { baseUrl, segmentPaths, outputDir, outputName } = data;
+  const { videoSegments, audioSegments, outputName } = data;
 
-  if (!baseUrl || !segmentPaths || !outputDir) {
-    throw new Error('Missing required fields: baseUrl, segmentPaths, outputDir');
+  if (!videoSegments || videoSegments.length === 0) {
+    throw new Error('Missing required field: videoSegments');
   }
 
+  const outputDir = join(process.env.HOME || '/tmp', 'Downloads', 'jwplayer-downloads', outputName || `video_${Date.now()}`);
+  const { mkdirSync } = await import('node:fs');
+  mkdirSync(outputDir, { recursive: true });
+
+  log(`Output directory: ${outputDir}`);
+  log(`Video segments: ${videoSegments.length}, Audio segments: ${audioSegments?.length || 0}`);
+
+  const allSegments = [...videoSegments, ...(audioSegments || [])];
   const segmentsFile = join(outputDir, 'segments.txt');
-  await generateSegmentsTxt(baseUrl, segmentPaths, segmentsFile);
+  
+  const { writeFileSync } = await import('node:fs');
+  writeFileSync(segmentsFile, allSegments.join('\n'), 'utf-8');
 
   sendMessage({ type: 'PROGRESS', stage: 'download', progress: 0 });
 
@@ -84,7 +100,7 @@ async function handleDownloadSegments(data) {
     sendMessage({ type: 'PROGRESS', stage: 'download', ...progress });
   });
 
-  return { success: true, outputDir, segmentsFile };
+  return { success: true, outputDir, segmentsFile, hasAudio: (audioSegments?.length || 0) > 0 };
 }
 
 async function handleMergeVideo(data) {
@@ -104,11 +120,14 @@ async function handleMergeVideo(data) {
 }
 
 async function main() {
+  log('main() started, waiting for messages...');
   while (true) {
     try {
       const message = await readMessage();
+      log(`Received message: ${JSON.stringify(message)}`);
 
       if (message === null) {
+        log('Received null message, exiting');
         break;
       }
 
@@ -140,6 +159,7 @@ async function main() {
 }
 
 main().catch((err) => {
+  log(`Fatal error: ${err.message}\n${err.stack}`);
   sendMessage({ type: 'FATAL_ERROR', error: err.message });
   process.exit(1);
 });
